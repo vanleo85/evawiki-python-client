@@ -142,6 +142,108 @@ FULLSEARCH_PATH = {
     }
 }
 
+MENUTREE_PATH = {
+    "post": {
+        "summary": "CmfMenuTree.get_parents_list",
+        "requestBody": {
+            "required": True,
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "jsonrpc": {
+                                "type": "string",
+                                "example": "2.2"
+                            },
+                            "method": {
+                                "type": "string",
+                                "enum": [
+                                    "CmfMenuTree.get_parents_list"
+                                ]
+                            },
+                            "callid": {
+                                "type": "string",
+                                "format": "uuid",
+                                "example": "3678dc6b-05cb-4af8-8aba-6bf241d0fe36"
+                            },
+                            "kwargs": {
+                                "type": "object",
+                                "properties": {
+                                    "filter": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "code",
+                                            "==",
+                                            "DOC-000066"
+                                        ]
+                                    },
+                                    "fields": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "code"
+                                        ]
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "slice": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "minItems": 2,
+                                        "maxItems": 2,
+                                        "example": [
+                                            0,
+                                            50
+                                        ]
+                                    },
+                                    "order_by": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "-cmf_created_at"
+                                        ]
+                                    },
+                                    "include_archived": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "additionalProperties": False
+                            }
+                        },
+                        "required": [
+                            "jsonrpc",
+                            "method",
+                            "callid",
+                            "kwargs"
+                        ]
+                    }
+                }
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "OK"
+            },
+            "401": {
+                "description": "Unauthorized"
+            },
+            "500": {
+                "description": "Internal Server Error"
+            }
+        }
+    }
+}
 
 def capitalize(s: str) -> str:
     if not s:
@@ -164,6 +266,7 @@ def process_swagger(file_path):
 
         # Добавляем полнотекстовый поиск, так как он отсутствует
         data["paths"]["/api/?m=CmfFullSearch.fulltext_search"] = FULLSEARCH_PATH
+        data["paths"]["/api/?m=CmfMenuTree.get_parents_list"] = MENUTREE_PATH
 
         for path_key, methods in data["paths"].items():
             for method_key, operation in methods.items():

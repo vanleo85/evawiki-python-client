@@ -53,7 +53,7 @@ openApiGenerate {
     configOptions.set(mapOf(
         "packageName" to "evawiki_client",
         "projectName" to "evawiki-python-client",
-        "packageVersion" to "0.1.6"
+        "packageVersion" to "0.1.7"
     ))
     gitHost.set("github.com")
     gitUserId.set("vanleo85")
