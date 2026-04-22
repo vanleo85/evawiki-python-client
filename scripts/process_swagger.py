@@ -11,6 +11,10 @@ JSONRPC_RESPONSE = {
             "type": "string",
             "default": "2.2"
         },
+        "jsurl": {
+            "type": "string",
+            "default": ""
+        },
         "callid": {
             "type": "string",
             "nullable": True,
@@ -31,219 +35,284 @@ JSONRPC_RESPONSE = {
     }
 }
 
-FULLSEARCH_PATH = {
-    "post": {
-        "summary": "CmfFullSearch.fulltext_search",
-        "requestBody": {
-            "required": True,
-            "content": {
-                "application/json": {
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "jsonrpc": {
-                                "type": "string",
-                                "example": "2.2",
-                                "default": "2.2"
-                            },
-                            "method": {
-                                "type": "string",
-                                "enum": [
-                                    "CmfFullSearch.fulltext_search"
-                                ],
-                                "default": "CmfFullSearch.fulltext_search"
-                            },
-                            "callid": {
-                                "type": "string",
-                                "format": "uuid",
-                                "example": "9e43d679-6e6a-4b81-b04e-ab5a415e3696",
-                                "x-generate-uuid": True
-                            },
-                            "args": {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
+PATHS = [
+    ("/api/?m=CmfFullSearch.fulltext_search", {
+        "post": {
+            "summary": "CmfFullSearch.fulltext_search",
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "jsonrpc": {
+                                    "type": "string",
+                                    "example": "2.2",
+                                    "default": "2.2"
                                 },
-                                "example": [
-                                    "CmfTask:b0a83d78-154e-11f0-bd3a-0242ac110002"
-                                ]
-                            },
-                            "kwargs": {
-                                "type": "object",
-                                "properties": {
-                                    "archived": {
-                                        "type": "boolean",
-                                        "default": False
-                                    },
-                                    "deleted": {
-                                        "type": "boolean",
-                                        "default": False
-                                    },
-                                    "fields": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        },
-                                        "example": [
-                                            "code"
-                                        ]
-                                    },
-                                    "no_analitycs": {
-                                        "type": "boolean",
-                                        "default": True
-                                    },
-                                    "parent_id": {
+                                "method": {
+                                    "type": "string",
+                                    "enum": [
+                                        "CmfFullSearch.fulltext_search"
+                                    ],
+                                    "default": "CmfFullSearch.fulltext_search"
+                                },
+                                "callid": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "9e43d679-6e6a-4b81-b04e-ab5a415e3696",
+                                    "x-generate-uuid": True
+                                },
+                                "args": {
+                                    "type": "array",
+                                    "items": {
                                         "type": "string"
                                     },
-                                    "slice": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "integer"
-                                        },
-                                        "minItems": 2,
-                                        "maxItems": 2,
-                                        "example": [
-                                            0,
-                                            50
-                                        ]
-                                    },
-                                    "titles_only": {
-                                        "type": "boolean",
-                                        "default": False
-                                    },
-                                    "top": {
-                                        "type": "boolean",
-                                        "default": False
-                                    }
+                                    "example": [
+                                        "CmfTask:b0a83d78-154e-11f0-bd3a-0242ac110002"
+                                    ]
                                 },
-                                "additionalProperties": False
-                            }
-                        },
-                        "required": [
-                            "callid",
-                            "args",
-                            "kwargs"
-                        ]
+                                "kwargs": {
+                                    "type": "object",
+                                    "properties": {
+                                        "archived": {
+                                            "type": "boolean",
+                                            "default": False
+                                        },
+                                        "deleted": {
+                                            "type": "boolean",
+                                            "default": False
+                                        },
+                                        "fields": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": [
+                                                "code"
+                                            ]
+                                        },
+                                        "no_analitycs": {
+                                            "type": "boolean",
+                                            "default": True
+                                        },
+                                        "parent_id": {
+                                            "type": "string"
+                                        },
+                                        "slice": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            },
+                                            "minItems": 2,
+                                            "maxItems": 2,
+                                            "example": [
+                                                0,
+                                                50
+                                            ]
+                                        },
+                                        "titles_only": {
+                                            "type": "boolean",
+                                            "default": False
+                                        },
+                                        "top": {
+                                            "type": "boolean",
+                                            "default": False
+                                        }
+                                    },
+                                    "additionalProperties": False
+                                }
+                            },
+                            "required": [
+                                "callid",
+                                "args",
+                                "kwargs"
+                            ]
+                        }
                     }
                 }
-            }
-        },
-        "responses": {
-            "200": {
-                "description": "OK"
             },
-            "401": {
-                "description": "Unauthorized"
-            },
-            "500": {
-                "description": "Internal Server Error"
-            }
-        }
-    }
-}
-
-MENUTREE_PATH = {
-    "post": {
-        "summary": "CmfMenuTree.get_parents_list",
-        "requestBody": {
-            "required": True,
-            "content": {
-                "application/json": {
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "jsonrpc": {
-                                "type": "string",
-                                "example": "2.2"
-                            },
-                            "method": {
-                                "type": "string",
-                                "enum": [
-                                    "CmfMenuTree.get_parents_list"
-                                ]
-                            },
-                            "callid": {
-                                "type": "string",
-                                "format": "uuid",
-                                "example": "3678dc6b-05cb-4af8-8aba-6bf241d0fe36"
-                            },
-                            "kwargs": {
-                                "type": "object",
-                                "properties": {
-                                    "filter": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        },
-                                        "example": [
-                                            "code",
-                                            "==",
-                                            "DOC-000066"
-                                        ]
-                                    },
-                                    "fields": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        },
-                                        "example": [
-                                            "code"
-                                        ]
-                                    },
-                                    "id": {
-                                        "type": "string"
-                                    },
-                                    "slice": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "integer"
-                                        },
-                                        "minItems": 2,
-                                        "maxItems": 2,
-                                        "example": [
-                                            0,
-                                            50
-                                        ]
-                                    },
-                                    "order_by": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        },
-                                        "example": [
-                                            "-cmf_created_at"
-                                        ]
-                                    },
-                                    "include_archived": {
-                                        "type": "boolean"
-                                    }
-                                },
-                                "additionalProperties": False
-                            }
-                        },
-                        "required": [
-                            "jsonrpc",
-                            "method",
-                            "callid",
-                            "kwargs"
-                        ]
-                    }
+            "responses": {
+                "200": {
+                    "description": "OK"
+                },
+                "401": {
+                    "description": "Unauthorized"
+                },
+                "500": {
+                    "description": "Internal Server Error"
                 }
             }
-        },
-        "responses": {
-            "200": {
-                "description": "OK"
+        }}),
+    ("/api/?m=CmfMenuTree.get_parents_list", {
+        "post": {
+            "summary": "CmfMenuTree.get_parents_list",
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "jsonrpc": {
+                                    "type": "string",
+                                    "example": "2.2"
+                                },
+                                "method": {
+                                    "type": "string",
+                                    "enum": [
+                                        "CmfMenuTree.get_parents_list"
+                                    ]
+                                },
+                                "callid": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "3678dc6b-05cb-4af8-8aba-6bf241d0fe36"
+                                },
+                                "kwargs": {
+                                    "type": "object",
+                                    "properties": {
+                                        "filter": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": [
+                                                "code",
+                                                "==",
+                                                "DOC-000066"
+                                            ]
+                                        },
+                                        "fields": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": [
+                                                "code"
+                                            ]
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "slice": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            },
+                                            "minItems": 2,
+                                            "maxItems": 2,
+                                            "example": [
+                                                0,
+                                                50
+                                            ]
+                                        },
+                                        "order_by": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": [
+                                                "-cmf_created_at"
+                                            ]
+                                        },
+                                        "include_archived": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "additionalProperties": True
+                                }
+                            },
+                            "required": [
+                                "jsonrpc",
+                                "method",
+                                "callid",
+                                "kwargs"
+                            ]
+                        }
+                    }
+                }
             },
-            "401": {
-                "description": "Unauthorized"
-            },
-            "500": {
-                "description": "Internal Server Error"
+            "responses": {
+                "200": {
+                    "description": "OK"
+                },
+                "401": {
+                    "description": "Unauthorized"
+                },
+                "500": {
+                    "description": "Internal Server Error"
+                }
             }
         }
-    }
-}
+    }),
+    ("/api/?m=CmfMenuTree.get_tree", {
+        "post": {
+            "summary": "CmfMenuTree.get_tree",
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "jsonrpc": {
+                                    "type": "string",
+                                    "example": "2.2"
+                                },
+                                "method": {
+                                    "type": "string",
+                                    "enum": [
+                                        "CmfMenuTree.get_tree"
+                                    ]
+                                },
+                                "callid": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "3678dc6b-05cb-4af8-8aba-6bf241d0fe36"
+                                },
+                                "kwargs": {
+                                    "type": "object",
+                                    "properties": {
+                                        "level": {
+                                            "type": "integer"
+                                        },
+                                        "only_archived": {
+                                            "type": "boolean",
+                                            "default": False
+                                        },
+                                        "tree_parent_id": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "additionalProperties": True
+                                }
+                            },
+                            "required": [
+                                "jsonrpc",
+                                "method",
+                                "callid",
+                                "kwargs"
+                            ]
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "OK"
+                },
+                "401": {
+                    "description": "Unauthorized"
+                },
+                "500": {
+                    "description": "Internal Server Error"
+                }
+            }
+        }
+    })
+]
 
 def capitalize(s: str) -> str:
     if not s:
@@ -263,10 +332,9 @@ def process_swagger(file_path):
 
     # Заменяем operationId на сгенерированные значения
     if "paths" in data:
-
         # Добавляем полнотекстовый поиск, так как он отсутствует
-        data["paths"]["/api/?m=CmfFullSearch.fulltext_search"] = FULLSEARCH_PATH
-        data["paths"]["/api/?m=CmfMenuTree.get_parents_list"] = MENUTREE_PATH
+        for k, v in PATHS:
+            data["paths"][k] = v
 
         for path_key, methods in data["paths"].items():
             for method_key, operation in methods.items():
