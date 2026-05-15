@@ -314,10 +314,31 @@ PATHS = [
     })
 ]
 
+
 def capitalize(s: str) -> str:
     if not s:
         return ""
     return s[0].upper() + s[1:]
+
+
+def adjust_attachment_create_method(data: dict) -> None:
+    CREATE_ATTACHMENT_PATH = "/api/?m=CmfAttachment.create"
+    if not CREATE_ATTACHMENT_PATH in data["paths"]:
+        return
+
+    props = data["paths"].get(CREATE_ATTACHMENT_PATH, {}).get("post", {}).get("requestBody", {}).get("content", {}).get(
+        "application/json", {}).get("schema", {}).get("properties", {}).get("kwargs", {}).get("properties", {})
+    if not props or props.get("size"):
+        return
+
+    props["size"] = {
+        "description": "File size in bytes",
+        "example": 1024,
+        "type": "integer",
+        "format": "int64",
+        "default": 1,
+        "minimum": 1,
+    }
 
 
 def process_swagger(file_path):
@@ -335,6 +356,8 @@ def process_swagger(file_path):
         # Добавляем полнотекстовый поиск, так как он отсутствует
         for k, v in PATHS:
             data["paths"][k] = v
+
+        adjust_attachment_create_method(data)
 
         for path_key, methods in data["paths"].items():
             for method_key, operation in methods.items():
