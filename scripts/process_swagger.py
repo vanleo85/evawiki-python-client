@@ -311,7 +311,84 @@ PATHS = [
                 }
             }
         }
-    })
+    }),
+    ("/api/?m=CmfDocument.convert_uml2svg", {
+        "post": {
+            "summary": "CmfDocument.convert_uml2svg",
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "jsonrpc": {
+                                    "type": "string",
+                                    "example": "2.2",
+                                    "default": "2.2"
+                                },
+                                "method": {
+                                    "type": "string",
+                                    "enum": [
+                                        "CmfDocument.convert_uml2svg"
+                                    ],
+                                    "default": "CmfDocument.convert_uml2svg"
+                                },
+                                "callid": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "3678dc6b-05cb-4af8-8aba-6bf241d0fe36"
+                                },
+                                "kwargs": {
+                                    "type": "object",
+                                    "properties": {
+                                        "obj_id": {
+                                            "type": "object",
+                                            "nullable": True
+                                        },
+                                        "uml": {
+                                            "type": "string",
+                                            "description": "uml описание диаграммы",
+                                            "example": "@startuml \n\n\"Ingress-1---\"\n\n@enduml"
+                                        },
+                                    }
+                                },
+                                "required": [
+                                    "uml"
+                                ],
+                                "additionalProperties": False
+                            },
+                            "required": [
+                                "callid",
+                                "kwargs"
+                            ]
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JsonRpcResponse"
+                            }
+                        }
+                    }
+                },
+                "401": {
+                    "description": "Unauthorized"
+                },
+                "500": {
+                    "description": "Internal Server Error"
+                }
+            },
+        }
+    }
+
+     )
+
 ]
 
 
