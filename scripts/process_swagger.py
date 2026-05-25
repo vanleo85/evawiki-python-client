@@ -311,6 +311,83 @@ PATHS = [
                 }
             }
         }
+    }),
+    ("/api/?m=CmfAttachment.delete", {
+        "post": {
+            "summary": "CmfAttachment.delete",
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "jsonrpc": {
+                                    "type": "string",
+                                    "example": "2.2",
+                                    "default": "2.2"
+                                },
+                                "method": {
+                                    "type": "string",
+                                    "enum": [
+                                        "CmfAttachment.delete"
+                                    ],
+                                    "default": "CmfAttachment.delete"
+                                },
+                                "callid": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "38f4bc97-8ea4-44f0-9dfb-47012b41cf6e",
+                                    "x-generate-uuid": True
+                                },
+                                "filter": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "example": [
+                                        "id",
+                                        "==",
+                                        "CmfAttachment:63e1cb13-5567-11f1-916e-0242ac110005"
+                                    ]
+                                },
+                                "fields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "example": [
+                                        "code"
+                                    ]
+                                },
+                            },
+                            "required": [
+                                "callid",
+                                "filter"
+                            ]
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JsonRpcResponse"
+                            }
+                        }
+                    }
+                },
+                "401": {
+                    "description": "Unauthorized"
+                },
+                "500": {
+                    "description": "Internal Server Error"
+                }
+            }
+        }
     })
 ]
 
